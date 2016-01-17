@@ -6,10 +6,12 @@ UniformDistribution::UniformDistribution()
     m_tableName = "uniform";
 }
 
-double UniformDistribution::rndFunction(alglib::ae_int_t n)
+double UniformDistribution::generate(alglib::ae_int_t n, int x)
 {
-    alglib::hqrndstate st;
-    alglib::hqrndrandomize(st);
-    return (double)alglib::hqrnduniformi(st, n);
+//    alglib::hqrndstate st;
+//    alglib::hqrndrandomize(st);
+//    int v = alglib::hqrnduniformi(st, n);
+    int v = rand()%n;
+    return (double)v;
 }
 

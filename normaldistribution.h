@@ -3,10 +3,10 @@
 
 #include "abstractdistribution.h"
 
-class UniformDistribution : public AbstractDistribution
+class NormalDistribution : public AbstractDistribution
 {
 public:
-    UniformDistribution();
+    NormalDistribution();
 
     // AbstractDistribution interface
 public:

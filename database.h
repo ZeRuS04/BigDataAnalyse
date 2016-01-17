@@ -50,7 +50,7 @@
 static bool createConnection(const QString &tableName)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(":bda:");
+    db.setDatabaseName("t_db");
     if (!db.open()) {
         qCritical() << "Unable to establish a database connection.\n"
                      "This example needs SQLite support. Please read "
@@ -62,29 +62,31 @@ static bool createConnection(const QString &tableName)
 
     QSqlQuery query;
 
-    query.exec(QString("create table %1 (id int primary key, value real)").arg(tableName));
+    query.exec(QString("create table %1 (id int primary key, value int)").arg(tableName));
     return true;
 }
 
-static uint insertData(double *data, int n, /*QSqlDatabase db,*/ const QString &tableName)
+static bool insertArray(double *data, int n, /*QSqlDatabase db,*/ const QString &tableName)
 {
     QSqlQuery query;
+    QString queryStr = "insert or replace into %1 values(%2, %3)";
+    queryStr = queryStr.arg(tableName).arg(0).arg(*data);
 
-    uint retVal = 0;
-
+    data++;
     for(int i = 0; i < n; i++) {
-        if (query.exec(QString("insert into %1 values(%2, %3)").arg(tableName).arg(i).arg(*data)))
-            retVal++;
+        queryStr += QString(",(%2, %3)").arg(i).arg(*data);
+
         data++;
     }
-    return retVal;
+
+    return query.exec(queryStr);
 }
 
 static bool insertData(double value, int id,/*QSqlDatabase db, */const QString &tableName)
 {
     QSqlQuery query;
 
-    return query.exec(QString("insert into %1 values(%2, %3)").arg(tableName).arg(id).arg(value));
+    return query.exec(QString("insert or replace into %1 values(%2, %3)").arg(tableName).arg(id).arg(value));
 }
 
 static uint getCountData(const QString &tableName)
@@ -100,6 +102,33 @@ static bool clearTable(const QString &tableName)
     QSqlQuery query;
 
     return query.exec(QString("TRUNCATE TABLE %1").arg(tableName));
+}
+
+static QVector<double> getData(const QString &tableName)
+{
+    QSqlQuery query;
+    QVector<double> retArr;
+
+    while (query.next()) {
+        double value = query.value(0).toDouble();
+        retArr << value;
+    }
+    return retArr;
+}
+
+static QMap<int, int> getDistribution(const QString &tableName)
+{
+    QSqlQuery query;
+    QMap<int, int> retMap;
+
+    query.exec(QString("SELECT value, COUNT(value) FROM %1 GROUP BY value").arg(tableName));
+
+    while (query.next()) {
+        int value = query.value(0).toInt();
+        int count = query.value(1).toInt();
+        retMap.insert(value, count);
+    }
+    return retMap;
 }
 
 #endif

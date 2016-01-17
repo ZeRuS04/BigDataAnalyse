@@ -1,8 +1,7 @@
 QT += core sql
 
 TARGET = BigDataAnalyse
-CONFIG += console
-CONFIG -= app_bundle
+CONFIG -= app_bundle console
 
 TEMPLATE = app
 
@@ -21,7 +20,9 @@ SOURCES += main.cpp \
     cpp/src/linalg.cpp \
     cpp/src/optimization.cpp \
     cpp/src/solvers.cpp \
-    cpp/src/specialfunctions.cpp
+    cpp/src/specialfunctions.cpp \
+    normaldistribution.cpp \
+    simplelineardistribution.cpp
 
 HEADERS += \
     database.h \
@@ -40,5 +41,7 @@ HEADERS += \
     cpp/src/optimization.h \
     cpp/src/solvers.h \
     cpp/src/specialfunctions.h \
-    cpp/src/stdafx.h
+    cpp/src/stdafx.h \
+    normaldistribution.h \
+    simplelineardistribution.h
 

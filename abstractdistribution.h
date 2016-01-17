@@ -5,6 +5,7 @@
 #include <QVector>
 #include "cpp/src/statistics.h"
 #include "cpp/src/ap.h"
+#include "qmath.h"
 #include "database.h"
 
 class AbstractDistribution : public QObject
@@ -13,9 +14,9 @@ class AbstractDistribution : public QObject
 public:
     explicit AbstractDistribution(QObject *parent = 0);
 
-    virtual double rndFunction(alglib::ae_int_t n) = 0;
+    virtual double generate(alglib::ae_int_t n, int x) = 0;
 
-    bool generate(uint n);
+    bool run(uint n, uint u);
     void calculateBasic(alglib::real_1d_array arr);
 
     double averageDev;
