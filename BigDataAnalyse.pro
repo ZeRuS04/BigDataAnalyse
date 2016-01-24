@@ -1,7 +1,6 @@
-QT += core sql
+QT += core sql charts gui widgets
 
 TARGET = BigDataAnalyse
-CONFIG -= app_bundle console
 
 TEMPLATE = app
 
@@ -22,7 +21,7 @@ SOURCES += main.cpp \
     cpp/src/solvers.cpp \
     cpp/src/specialfunctions.cpp \
     normaldistribution.cpp \
-    simplelineardistribution.cpp
+    chartview.cpp
 
 HEADERS += \
     database.h \
@@ -43,5 +42,5 @@ HEADERS += \
     cpp/src/specialfunctions.h \
     cpp/src/stdafx.h \
     normaldistribution.h \
-    simplelineardistribution.h
+    chartview.h
 

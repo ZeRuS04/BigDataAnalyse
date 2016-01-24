@@ -45,6 +45,8 @@
 #include <QVector>
 #include <QSqlDatabase>
 #include <QSqlError>
+#include <QSqlQueryModel>
+#include <QTableView>
 #include <QSqlQuery>
 
 static bool createConnection(const QString &tableName)
@@ -62,12 +64,14 @@ static bool createConnection(const QString &tableName)
 
     QSqlQuery query;
 
+    qDebug() << "createConnection" << tableName;
     query.exec(QString("create table %1 (id int primary key, value int)").arg(tableName));
     return true;
 }
 
 static bool insertArray(double *data, int n, /*QSqlDatabase db,*/ const QString &tableName)
 {
+    qDebug() << "insertArray" << tableName;
     QSqlQuery query;
     QString queryStr = "insert or replace into %1 values(%2, %3)";
     queryStr = queryStr.arg(tableName).arg(0).arg(*data);
@@ -82,8 +86,20 @@ static bool insertArray(double *data, int n, /*QSqlDatabase db,*/ const QString 
     return query.exec(queryStr);
 }
 
+static void showTable(const QString &tableName) {
+
+    qDebug() << "showTable" << tableName;
+    QSqlQueryModel *model = new QSqlQueryModel;
+    model->setQuery(QString("SELECT * FROM %1").arg(tableName));
+
+    QTableView *view = new QTableView;
+    view->setModel(model);
+    view->show();
+}
+
 static bool insertData(double value, int id,/*QSqlDatabase db, */const QString &tableName)
 {
+    qDebug() << "insertData" << tableName;
     QSqlQuery query;
 
     return query.exec(QString("insert or replace into %1 values(%2, %3)").arg(tableName).arg(id).arg(value));
@@ -91,21 +107,24 @@ static bool insertData(double value, int id,/*QSqlDatabase db, */const QString &
 
 static uint getCountData(const QString &tableName)
 {
+    qDebug() << "getCountData" << tableName;
     QSqlQuery query;
     query.exec(QString("SELECT COUNT(*) FROM %1 ").arg(tableName));
-    return query.boundValue(1).toInt();
+    return query.value(0).toInt();
 }
 
 
 static bool clearTable(const QString &tableName)
 {
+    qDebug() << "clearTable" << tableName;
     QSqlQuery query;
 
-    return query.exec(QString("TRUNCATE TABLE %1").arg(tableName));
+    return query.exec(QString("DELETE FROM %1").arg(tableName));
 }
 
 static QVector<double> getData(const QString &tableName)
 {
+    qDebug() << "getData" << tableName;
     QSqlQuery query;
     QVector<double> retArr;
 
@@ -118,6 +137,7 @@ static QVector<double> getData(const QString &tableName)
 
 static QMap<int, int> getDistribution(const QString &tableName)
 {
+    qDebug() << "getDistribution" << tableName;
     QSqlQuery query;
     QMap<int, int> retMap;
 

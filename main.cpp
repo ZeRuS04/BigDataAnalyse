@@ -1,10 +1,21 @@
-#include "uniformdistribution.h"
-//#include "normaldistribution.h"
+#include <QtWidgets/QApplication>
+//#include "uniformdistribution.h"
+#include "normaldistribution.h"
+
+//QT_CHARTS_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    UniformDistribution ud;
+    QApplication a(argc, argv);
 
-    return ud.run(500000, 400);
+//    UniformDistribution ud;
+
+//    ud.run(500000, 40);
+
+    NormalDistribution nd;
+
+    nd.run(500000, 4);
+
+
+    return a.exec();
 }
-

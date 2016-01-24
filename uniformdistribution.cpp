@@ -15,3 +15,8 @@ double UniformDistribution::generate(alglib::ae_int_t n, int x)
     return (double)v;
 }
 
+double UniformDistribution::persistance(double a, double b, int u)
+{
+    return 1./u;
+}
+
